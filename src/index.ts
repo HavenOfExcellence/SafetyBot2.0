@@ -5,7 +5,7 @@ import config from "./config";
 
 import bot from "./lib/bot";
 import helper from "./commands/helper";
-import echo from "./commands/echo";
+import safety from "./commands/safety";
 
 import { toEscapeMsg } from "./utils/messageHandler";
 
@@ -48,8 +48,7 @@ if (process.env.NODE_ENV === "production") {
   bot.launch();
 }
 
-helper();
-echo();
+safety();
 
 // Enable graceful stop
 process.once("SIGINT", () => bot.stop("SIGINT"));
