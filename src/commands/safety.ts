@@ -14,7 +14,7 @@ if (process.env.NODE_ENV == "production") {
   );
 }
 
-async function main(key: string) {
+async function main(key: string, ctx: any) {
   const auth = new google.auth.GoogleAuth({
     keyFile: "secrets.json",
     scopes: "https://www.googleapis.com/auth/spreadsheets",
@@ -43,6 +43,7 @@ async function main(key: string) {
   );
   console.log("resolve");
   console.log(getRows[key]);
+  ctx.reply(getRows[key]);
 
   return getRows[key];
 }
@@ -50,11 +51,7 @@ async function main(key: string) {
 const safety = () => {
   try {
     bot.on("text", (ctx) => {
-      const data = main("/help");
-      data.then(() => {
-        console.log(data);
-        ctx.reply(data);
-      });
+      main(ctx.update.message.text, ctx);
     });
   } catch (error) {
     console.log(error);
