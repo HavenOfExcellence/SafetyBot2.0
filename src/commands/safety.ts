@@ -38,9 +38,18 @@ const getRows = main();
 const safety = () => {
   try {
     bot.on("text", (ctx) => {
-      getRows.then((value) => [
-        ctx.reply(value[ctx.update.message.text]),
-      ]);
+      getRows.then((value) => {
+        if (
+          value[ctx.update.message.text] == null ||
+          value[ctx.update.message.text] == undefined
+        ) {
+          ctx.reply(
+            "Sorry I didn't Understand you!\n Please make sure you have the correct command.",
+          );
+        } else {
+          ctx.reply(value[ctx.update.message.text]);
+        }
+      });
     });
   } catch (error) {
     console.log(error);
