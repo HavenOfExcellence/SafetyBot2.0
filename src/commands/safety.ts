@@ -2,19 +2,7 @@ import bot from "../lib/bot";
 const { google } = require("googleapis");
 const spreadsheetID = "1ttD1tC1MO1Ab_mRl6roKoG5zx9-9VW4URZbQfMV7etw";
 
-if (process.env.NODE_ENV == "production") {
-  var fs = require("fs");
-
-  fs.writeFile(
-    "../../secrets.json",
-    process.env.SECRET,
-    (err: any) => {
-      err;
-    },
-  );
-}
-
-async function main(key: string, ctx: any) {
+async function main() {
   const auth = new google.auth.GoogleAuth({
     keyFile: "secrets.json",
     scopes: "https://www.googleapis.com/auth/spreadsheets",
@@ -42,16 +30,17 @@ async function main(key: string, ctx: any) {
     ...getRows.data.values.map(([key, val]) => ({ [key]: val })),
   );
   console.log("resolve");
-  console.log(getRows[key]);
-  ctx.reply(getRows[key]);
-
-  return getRows[key];
+  return getRows;
 }
+
+const getRows = main();
 
 const safety = () => {
   try {
     bot.on("text", (ctx) => {
-      main(ctx.update.message.text, ctx);
+      getRows.then((value) => [
+        ctx.reply(value[ctx.update.message.text]),
+      ]);
     });
   } catch (error) {
     console.log(error);
