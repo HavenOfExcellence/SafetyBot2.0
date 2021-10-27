@@ -9,14 +9,6 @@ import safety from "./commands/safety";
 
 import { toEscapeMsg } from "./utils/messageHandler";
 
-if (process.env.NODE_ENV == "production") {
-  var fs = require("fs");
-  console.log("asd");
-
-  fs.writeFile("./secrets.json", process.env.SECRET, (err: any) => {
-    err;
-  });
-}
 //Production Settings
 if (process.env.NODE_ENV === "production") {
   //Production Logging
@@ -57,5 +49,3 @@ if (process.env.NODE_ENV === "production") {
 }
 
 safety();
-
-
